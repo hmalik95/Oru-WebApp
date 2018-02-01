@@ -1,11 +1,13 @@
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static spark.Spark.*;
+
 
 public class Main extends dbConnection {
     private static test_db_insert_and_connect db = new test_db_insert_and_connect();
@@ -13,7 +15,6 @@ public class Main extends dbConnection {
 
 
     public static void main(String[] args) {
-
         get("/",(req, res) -> {
 
             return new ModelAndView(null, "index.hbs");
@@ -42,6 +43,28 @@ public class Main extends dbConnection {
 
         }, new HandlebarsTemplateEngine());
 
+        /* Sending the user to the register page */
+        post("/register", (req, res) -> {
+            return new ModelAndView(null, "register.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        post("/success", (req, res) -> {
+            String inputU = req.queryParams("username");
+            String inputP = req.queryParams("password");
+            Boolean userExist = false;
+            if (db.getUsername(inputU) != null)
+            {
+                userExist = true;
+            }
+            if (userExist)
+            {
+                db.insert(inputU,inputP);
+                return new ModelAndView(null, "success.hbs");
+            }
+            else {
+                return new ModelAndView((null, "index.hbs");
+            }
+        }, new HandlebarsTemplateEngine());
 
     }
 

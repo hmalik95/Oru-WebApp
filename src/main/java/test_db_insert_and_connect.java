@@ -87,6 +87,33 @@ public class test_db_insert_and_connect {
             System.out.println(e.getMessage());
         }
     }
+    /**
+     * Get a user row from the users table
+     *
+     * @param uName
+     *
+     */
+    public String getUsername(String uName)
+    {
+        String sql = "SELECT username FROM Users WHERE username= ?";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            pstmt.setString(1, uName);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+
+            // loop through the result set
+            while (rs.next()) {
+                DbUsername(rs.getString("username"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return dbUsername;
+    }
 
     /**
      * @param args the command line arguments
