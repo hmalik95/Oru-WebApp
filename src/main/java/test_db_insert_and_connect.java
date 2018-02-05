@@ -58,6 +58,19 @@ public class test_db_insert_and_connect {
             System.out.println(e.getMessage());
         }
     }
+    public void insertPost(String category, String text){
+        String sql = "insert into Posts(category,text) values (?,?)";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, category);
+            pstmt.setString(2, text);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        }
+
 
     /**
      * Get a user row from the users table

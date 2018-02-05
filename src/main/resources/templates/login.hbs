@@ -1,6 +1,15 @@
 {{#partial "head"}}{{/partial}}
 {{#partial "content"}}
 <p>välkommen  {{username}}</p>
+<form action="/post" method="post">
+    <select name="category" >
+        <option value="Formell">Formell</option>
+        <option value="Informell">Informell</option>
+        <option value="Övrigt">Övrigt</option>
+    </select>
+    <input type="text" name="text">
+    <button>Skicka</button>
+</form>
 {{/partial}}
 {{#partial "footer"}}{{/partial}}
 {{>base.hbs}}

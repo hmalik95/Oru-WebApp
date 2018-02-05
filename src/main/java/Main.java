@@ -73,6 +73,14 @@ public class Main extends dbConnection {
 
         }, new HandlebarsTemplateEngine());
 
+        post("/post",(req,res)->{
+            String inputCategory=req.queryParams("category");
+            String inputText=req.queryParams("text");
+            db.insertPost(inputCategory,inputText);
+            res.redirect("/");
+            return null;
+        });
+
 
     }
 
