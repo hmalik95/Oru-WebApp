@@ -1,0 +1,36 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url("img/pic1.jpg");
+    background-size: cover;
+    background-position: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    text-align: center;
+}
+h1{
+    text-align: center;
+    font-size: 50px;
+    color: steelblue;
+}
+form{
+    margin: 20px auto;
+    width: 320px;
+    color: steelblue;
+}
+input{
+    padding: 10px;
+    font-size: inherit;
+}
+input[type="text"]{
+    display: block;
+    margin-bottom: 25px;
+    width: 100%;
+    border: 2px solid steelblue;
+}
+input[type="password"]{
+    display: block;
+    margin-bottom: 25px;
+    width: 100%;
+    border: 2px solid steelblue;
+}

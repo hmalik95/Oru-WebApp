@@ -15,6 +15,7 @@ public class Main extends dbConnection {
 
 
     public static void main(String[] args) {
+        staticFileLocation("/public");
         get("/",(req, res) -> {
 
             return new ModelAndView(null, "index.hbs");
@@ -30,16 +31,18 @@ public class Main extends dbConnection {
             {
                 userExist = true;
             }
-
-            Map<String, String> model = new HashMap<>();
-            model.put("username", req.queryParams("username"));
-            if (userExist == true) {
-                return new ModelAndView(model, "login.hbs");
+            if (!userExist) {
+                res.redirect("/");
+                return null;
             }
             else
             {
-                return new ModelAndView(model, "index.hbs");
+                Map<String, String> model = new HashMap<>();
+                model.put("username", req.queryParams("username"));
+
+                return new ModelAndView(model, "login.hbs");
             }
+
 
         }, new HandlebarsTemplateEngine());
 
@@ -48,6 +51,7 @@ public class Main extends dbConnection {
             return new ModelAndView(null, "register.hbs");
         }, new HandlebarsTemplateEngine());
 
+        /*
         post("/success", (req, res) -> {
             String inputU = req.queryParams("username");
             String inputP = req.queryParams("password");
@@ -56,15 +60,17 @@ public class Main extends dbConnection {
             {
                 userExist = true;
             }
-            if (userExist)
+            if (!userExist)
             {
                 db.insert(inputU,inputP);
                 return new ModelAndView(null, "success.hbs");
             }
             else {
-                return new ModelAndView((null, "index.hbs");
+                //return new ModelAndView(null, "index.hbs");
+
             }
         }, new HandlebarsTemplateEngine());
+        */
 
     }
 

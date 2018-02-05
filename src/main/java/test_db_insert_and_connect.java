@@ -1,8 +1,8 @@
 import java.sql.*;
 
 public class test_db_insert_and_connect {
-    private String dbUsername = null;
-    private String dbPassword = null;
+    private String dbUsername = "";
+    private String dbPassword = "";
 
     /* Set the username as whatever the user types in */
     public void DbUsername(String username)
