@@ -93,8 +93,9 @@ public class test_db_insert_and_connect {
      * @param uName
      *
      */
-    public String getUsername(String uName)
+    public boolean getUsername(String uName)
     {
+        boolean exist = false;
         String sql = "SELECT username FROM Users WHERE username= ?";
         try (Connection conn = this.connect();
              PreparedStatement pstmt  = conn.prepareStatement(sql)){
@@ -105,14 +106,24 @@ public class test_db_insert_and_connect {
             ResultSet rs  = pstmt.executeQuery();
 
             // loop through the result set
-            while (rs.next()) {
-                DbUsername(rs.getString("username"));
+            if(!rs.next())
+            {
+                exist = false;
             }
+            else
+            {
+                exist = true;
+            }
+            /*while (rs.next()) {
+                DbUsername(rs.getString("username"));
+            }*/
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return dbUsername;
+
+        return exist;
     }
 
     /**

@@ -17,7 +17,6 @@ public class Main extends dbConnection {
     public static void main(String[] args) {
         staticFileLocation("/public");
         get("/",(req, res) -> {
-
             return new ModelAndView(null, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -47,30 +46,33 @@ public class Main extends dbConnection {
         }, new HandlebarsTemplateEngine());
 
         /* Sending the user to the register page */
-        post("/register", (req, res) -> {
+        get("/register", (req, res) -> {
             return new ModelAndView(null, "register.hbs");
         }, new HandlebarsTemplateEngine());
 
-        /*
-        post("/success", (req, res) -> {
+
+        post("/register", (req, res) -> {
             String inputU = req.queryParams("username");
             String inputP = req.queryParams("password");
             Boolean userExist = false;
-            if (db.getUsername(inputU) != null)
+            if (db.getUsername(inputU) != false)
             {
                 userExist = true;
             }
             if (!userExist)
             {
                 db.insert(inputU,inputP);
-                return new ModelAndView(null, "success.hbs");
+                res.redirect("/");
+                return null;
             }
             else {
-                //return new ModelAndView(null, "index.hbs");
-
+                res.redirect("/register");
+                return null;
             }
+
+
         }, new HandlebarsTemplateEngine());
-        */
+
 
     }
 

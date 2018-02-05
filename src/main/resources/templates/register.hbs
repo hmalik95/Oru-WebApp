@@ -1,49 +1,7 @@
-<!doctype html>
-<html>
-<head>
-    <titel></titel>
-</head>
-<link rel="stylesheet" href="/css/style.css">
-<style>body{
-    margin: 0;
-    padding: 0;
-    background-image: url("templates/pic1.jpg");
-    background-size: cover;
-    background-position: center;
-    font-family: 'Roboto', sans-serif;
-    font-size: 15px;
-    text-align: center;
-}
-h1{
-    text-align: center;
-    font-size: 50px;
-    color: steelblue;
-}
-form{
-    margin: 20px auto;
-    width: 320px;
-    color: steelblue;
-}
-input{
-    padding: 10px;
-    font-size: inherit;
-}
-input[type="text"]{
-    display: block;
-    margin-bottom: 25px;
-    width: 100%;
-    border: 2px solid steelblue;
-}
-input[type="password"]{
-    display: block;
-    margin-bottom: 25px;
-    width: 100%;
-    border: 2px solid steelblue;
-}
-</style>
-<body>
+{{#partial "head"}}{{/partial}}
+{{#partial "content"}}
 <h1>Register</h1>
-<form action="/success" method="post">
+<form action="/register" method="post">
     <input type="text" name="username" placeholder="Username">
     <input type="text" name="email" placeholder="Email">
     <input type="text" name="cellphone" placeholder="Cellphone">
@@ -52,6 +10,6 @@ input[type="password"]{
     <button>Skicka</button>
 
 </form>
-
-</body>
-</html>
+{{/partial}}
+{{#partial "footer"}}{{/partial}}
+{{>base.hbs}}
