@@ -1,25 +1,27 @@
+import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class test_db_insert_and_connect {
     private String dbUsername = "";
-    private String dbPassword = "";
+    private int dbPassword;
 
     /* Set the username as whatever the user types in */
-    public void DbUsername(String username)
-    {
+    public void DbUsername(String username) {
         dbUsername = username;
     }
+
     /* Get the username */
-    public String getDbUsername()
-    {
+    public String getDbUsername() {
         return dbUsername;
     }
-    public void DbPassword(String password)
-    {
+
+    public void DbPassword(int password) {
         dbPassword = password;
     }
 
-    public String getDbPassword() {
+    public int getDbPassword() {
         return dbPassword;
     }
 
@@ -46,19 +48,20 @@ public class test_db_insert_and_connect {
      * @param name
      * @param password
      */
-    public void insert(String name, String password) {
+    public void insert(String name, int password) {
         String sql = "INSERT INTO Users(username,password) VALUES(?,?)";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, name);
-            pstmt.setString(2, password);
+            pstmt.setInt(2, password);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    public void insertPost(String category, String text){
+
+    public void insertPost(String category, String text) {
         String sql = "insert into Posts(category,text) values (?,?)";
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -69,7 +72,7 @@ public class test_db_insert_and_connect {
             System.out.println(e.getMessage());
         }
 
-        }
+    }
 
 
     /**
@@ -78,53 +81,48 @@ public class test_db_insert_and_connect {
      * @param name
      * @param password
      */
-    public void getUsernameAndPassword(String name, String password)
-    {
+    public void getUsernameAndPassword(String name, int password) {
 
-         String sql = "SELECT username,password FROM Users WHERE username= ? AND password = ?";
+        String sql = "SELECT username,password FROM Users WHERE username= ? AND password = ?";
         try (Connection conn = this.connect();
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the value
             pstmt.setString(1, name);
-            pstmt.setString(2, password);
+            pstmt.setInt(2, password);
             //
-            ResultSet rs  = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             // loop through the result set
             while (rs.next()) {
                 DbUsername(rs.getString("username"));
-                DbPassword(rs.getString("password"));
+                DbPassword(rs.getInt("password"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
     /**
      * Get a user row from the users table
      *
      * @param uName
-     *
      */
-    public boolean getUsername(String uName)
-    {
+    public boolean getUsername(String uName) {
         boolean exist = false;
         String sql = "SELECT username FROM Users WHERE username= ?";
         try (Connection conn = this.connect();
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the value
             pstmt.setString(1, uName);
             //
-            ResultSet rs  = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             // loop through the result set
-            if(!rs.next())
-            {
+            if (!rs.next()) {
                 exist = false;
-            }
-            else
-            {
+            } else {
                 exist = true;
             }
             /*while (rs.next()) {
@@ -144,11 +142,81 @@ public class test_db_insert_and_connect {
      */
     public static void main(String[] args) {
 
-       // test_db_insert_and_connect app = new test_db_insert_and_connect();
+        // test_db_insert_and_connect app = new test_db_insert_and_connect();
         // insert three new rows
         /*app.insert("Raw-Materials", "gunnar");
         app.insert("Semifinished-Goods", "Svett123");
         app.insert("Finished-Goods", "Pooping123");
         */
     }
+
+
+    public List<List<String>> getAllPosts(String kategori) {
+        List<List<String>> outer = new ArrayList<List<String>>();
+        List<String> inner1 = new ArrayList<String>();
+        List<String> inner2 = new ArrayList<String>();
+
+        String sql = "SELECT Category, Text FROM Posts WHERE Category= ?";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            // set the value
+            pstmt.setString(1, kategori);
+            //
+            ResultSet rs = pstmt.executeQuery();
+            // loop through the result set
+            while (rs.next()) {
+                inner1.add(rs.getString("Category"));
+                inner2.add(rs.getString("Text"));
+            }
+            outer.add(inner1);
+            outer.add(inner2);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return outer;
+    }
 }
+        /*
+    private byte[] readFile(String file)
+    {
+        ByteArrayOutputStream bos = null;
+        try {
+            File f = new File(file);
+            FileInputStream fis = new FileInputStream(f);
+            byte[] buffer = new byte[1024];
+            bos = new ByteArrayOutputStream();
+            for(int len; (len = fis.read(buffer)) != -1;) {
+                bos.write(buffer, 0, len);
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        return bos != null ? bos.toByteArray() : null;
+    }
+    public void updatePicture(int materialId, String filename) {
+        // update sql
+        String updateSQL = "UPDATE Posts SET file = ? WHERE UserID=?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+
+            // set parameters
+            pstmt.setBytes(1, readFile(filename));
+            pstmt.setInt(2, materialId);
+
+            pstmt.executeUpdate();
+            System.out.println("Stored the file in the BLOB column.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    */
