@@ -1,11 +1,12 @@
-import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class test_db_insert_and_connect {
+public class test_db_insert_and_connect implements test_db_insert_and_connect_DAO {
     private String dbUsername = "";
     private int dbPassword;
+
+    private String posts = "svett";
 
     /* Set the username as whatever the user types in */
     public void DbUsername(String username) {
@@ -23,6 +24,17 @@ public class test_db_insert_and_connect {
 
     public int getDbPassword() {
         return dbPassword;
+    }
+
+    public String getPosts() {
+        return posts;
+    }
+
+    private List<test_db_insert_and_connect> fullPost;
+
+    private List<String> fullPostText;
+
+    public test_db_insert_and_connect() { fullPostText = new ArrayList<>();
     }
 
     /**
@@ -71,10 +83,28 @@ public class test_db_insert_and_connect {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
 
+    public List<String> test(){
+        String sql = "SELECT Text from Posts";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next())
+            {
+
+                fullPostText.add(rs.getString("Text"));
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return fullPostText;
+    }
     /**
      * Get a user row from the users table
      *
@@ -141,13 +171,6 @@ public class test_db_insert_and_connect {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-        // test_db_insert_and_connect app = new test_db_insert_and_connect();
-        // insert three new rows
-        /*app.insert("Raw-Materials", "gunnar");
-        app.insert("Semifinished-Goods", "Svett123");
-        app.insert("Finished-Goods", "Pooping123");
-        */
     }
 
 
@@ -177,46 +200,17 @@ public class test_db_insert_and_connect {
 
         return outer;
     }
+
+    @Override
+    public boolean add(test_db_insert_and_connect post) {
+        return fullPost.add(post);
+    }
+
+    @Override
+    public List<test_db_insert_and_connect> findAll() {
+        return new ArrayList<>(fullPost);
+    }
+    public List<String> findIt() {
+        return new ArrayList<>(fullPostText);
+    }
 }
-        /*
-    private byte[] readFile(String file)
-    {
-        ByteArrayOutputStream bos = null;
-        try {
-            File f = new File(file);
-            FileInputStream fis = new FileInputStream(f);
-            byte[] buffer = new byte[1024];
-            bos = new ByteArrayOutputStream();
-            for(int len; (len = fis.read(buffer)) != -1;) {
-                bos.write(buffer, 0, len);
-            }
-        }
-        catch (FileNotFoundException e)
-        {
-            System.err.println(e.getMessage());
-        }
-        catch (IOException e)
-        {
-            System.err.println(e.getMessage());
-        }
-        return bos != null ? bos.toByteArray() : null;
-    }
-    public void updatePicture(int materialId, String filename) {
-        // update sql
-        String updateSQL = "UPDATE Posts SET file = ? WHERE UserID=?";
-
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
-
-            // set parameters
-            pstmt.setBytes(1, readFile(filename));
-            pstmt.setInt(2, materialId);
-
-            pstmt.executeUpdate();
-            System.out.println("Stored the file in the BLOB column.");
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    */

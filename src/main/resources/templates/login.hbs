@@ -1,7 +1,7 @@
 {{#partial "head"}}{{/partial}}
 {{#partial "content"}}
 <p>välkommen  {{username}}</p>
-<form action="/post" method="post">
+<form action="/posts" method="post">
     <select name="category" >
         <option value="Formell">Formell</option>
         <option value="Informell">Informell</option>
@@ -11,9 +11,7 @@
     <button>Skicka</button>
 </form>
 
-    {{#if return not null }}
-        Svett
-    {{/if}}
+<a href="/posts">Posts</a>
 
 {{/partial}}
 {{#partial "footer"}}{{/partial}}

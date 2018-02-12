@@ -1,7 +1,5 @@
-import com.sun.org.apache.xpath.internal.operations.Variable;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
-
 
 import java.util.*;
 
@@ -79,6 +77,7 @@ public class Main extends dbConnection {
 
         }, new HandlebarsTemplateEngine());
 
+        /*
         post("/post",(req,res)->{
             String inputCategory=req.queryParams("category");
             String inputText=req.queryParams("text");
@@ -99,6 +98,21 @@ public class Main extends dbConnection {
             }
             return null;
         });
+        */
+        post("/posts", (req, res) -> {
+            String text = req.queryParams("text");
+            String category = req.queryParams("category");
+            db.insertPost(category, text);
+
+            res.redirect("/posts");
+            return null;
+        });
+        get("/posts", (req, res) -> {
+                Map<String, Object> model = new HashMap<>();
+
+                model.put("fullPostsTextu", db.test());
+                return new ModelAndView(model, "post.hbs");
+        }, new HandlebarsTemplateEngine());
 
 
     }
