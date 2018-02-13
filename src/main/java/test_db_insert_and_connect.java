@@ -94,6 +94,7 @@ public class test_db_insert_and_connect implements test_db_insert_and_connect_DA
 
 
             ResultSet rs = pstmt.executeQuery();
+            fullPostText.clear();
             while (rs.next())
             {
 
@@ -103,7 +104,7 @@ public class test_db_insert_and_connect implements test_db_insert_and_connect_DA
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return fullPostText;
+        return new ArrayList<>(fullPostText);
     }
     /**
      * Get a user row from the users table
